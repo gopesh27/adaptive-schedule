@@ -20,7 +20,7 @@ st.markdown("""
 
     /* Titles */
     h1, h2, h3, h4 {
-        color: #1e293b;
+        color: #191970;
         font-weight: 600;
     }
 

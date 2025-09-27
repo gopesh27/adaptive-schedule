@@ -14,7 +14,7 @@ st.markdown("""
     <style>
     /* Main background */
     .stApp {
-        background-color: #DA70D6;
+        background linear-gradient(90deg, #2563eb, #000000) !important;
         font-family: 'Segoe UI', sans-serif;
     }
 
@@ -26,7 +26,7 @@ st.markdown("""
 
     /* Buttons */
     .stButton > button {
-        background: linear-gradient(90deg, #2563eb, #000000) !important;
+        background:-color: #DA70D6;
         color: white !important;
         border: none !important;
         border-radius: 12px !important;

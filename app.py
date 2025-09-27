@@ -147,7 +147,7 @@ if uploaded_file is not None:
     output_cols = st.multiselect(
         "Select Output Columns (y)", 
         all_columns, 
-        default=["machine", "manpower"]
+        default=[c for c in ["machine", "manpower"] if c in all_columns]
     )
 
     # ----------------------------
@@ -226,6 +226,6 @@ if "model" in st.session_state:
 
         st.success("🎯 Predictions:")
         for i, col in enumerate(st.session_state["output_cols"]):
-            st.write(f"{col}:** {prediction[i]}")
+            st.write(f"{col}: **{prediction[i]}**")
 else:
     st.info("Please upload a CSV, select columns, and click 🚀 Train Model")

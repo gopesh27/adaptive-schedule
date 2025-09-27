@@ -5,102 +5,67 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
 
-st.title("🤖 AI-Driven Adaptive Scheduling")
-
 # ----------------------------
-# Custom CSS (Professional Theme)
+# Custom CSS Styling
 # ----------------------------
-st.markdown(
-    """
+st.markdown("""
     <style>
-    /* App background */
+    /* Background */
     .stApp {
-        background: linear-gradient(135deg, #f4f7fb, #e8ecf3);
-        font-family: "Segoe UI", Roboto, Arial, sans-serif;
-        color: #1e293b;
+        background-color: #f4f6f9;
+        font-family: "Segoe UI", sans-serif;
     }
 
-    /* Sidebar */
-    section[data-testid="stSidebar"] {
-        background-color: #1e293b;
-        color: #f1f5f9;
-    }
-    section[data-testid="stSidebar"] * {
-        color: #f1f5f9 !important;
-    }
-
-    /* Headings */
-    h1 {
-        color: #1e293b;
-        font-weight: 700;
-        padding-bottom: 0.5em;
-        border-bottom: 3px solid #2563eb;
-    }
-    h2, h3 {
-        color: #334155;
+    /* Titles */
+    h1, h2, h3, h4 {
+        color: #1e3a8a;
         font-weight: 600;
     }
 
     /* Buttons */
     .stButton > button {
-        background: linear-gradient(90deg, #2563eb, #1d4ed8);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        padding: 0.6em 1.2em;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease-in-out;
+        background: linear-gradient(90deg, #2563eb, #1d4ed8) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 0.6em 1.2em !important;
+        font-weight: 500 !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease-in-out !important;
     }
     .stButton > button:hover {
-        background: linear-gradient(90deg, #1d4ed8, #2563eb);
-        transform: scale(1.05);
+        background: linear-gradient(90deg, #1d4ed8, #2563eb) !important;
+        transform: scale(1.02);
+    }
+    .stButton > button:active {
+        transform: scale(0.97);
     }
 
-    /* Dataframe/Table */
+    /* Dataframe Styling */
     .stDataFrame {
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    /* Info / Success / Warning messages */
+    .stAlert {
+        border-radius: 10px;
+    }
+
+    /* Multiselect & Inputs */
+    .stMultiSelect, .stNumberInput, .stSelectbox {
+        background-color: white;
+        border-radius: 10px;
         padding: 0.5em;
-        box-shadow: 0px 2px 6px rgba(0,0,0,0.05);
-    }
-
-    /* Input Widgets */
-    .stNumberInput input, 
-    .stSelectbox div[data-baseweb="select"] {
-        border-radius: 8px !important;
-        border: 1px solid #cbd5e1 !important;
-        padding: 0.4em 0.6em !important;
-    }
-
-    /* Success, Info messages */
-    .stSuccess {
-        background-color: #dcfce7;
-        color: #166534;
-        border-left: 6px solid #22c55e;
-        border-radius: 10px;
-        padding: 0.75em 1em;
-    }
-    .stInfo {
-        background-color: #e0f2fe;
-        color: #075985;
-        border-left: 6px solid #0ea5e9;
-        border-radius: 10px;
-        padding: 0.75em 1em;
-    }
-
-    /* Metrics/Accuracy Section */
-    .css-1ht1j8u {  
-        background: #f8fafc;
-        padding: 1em;
-        border-radius: 12px;
-        box-shadow: 0px 2px 6px rgba(0,0,0,0.05);
     }
     </style>
-    """,
-    unsafe_allow_html=True
-)
+""", unsafe_allow_html=True)
+
+# ----------------------------
+# App Title
+# ----------------------------
+st.title("🤖 AI-Driven Adaptive Scheduling")
 
 # ----------------------------
 # Feature Engineering Function
@@ -122,7 +87,7 @@ def add_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
 # ----------------------------
 # Upload CSV
 # ----------------------------
-uploaded_file = st.file_uploader("Upload your CSV file", type=["csv"])
+uploaded_file = st.file_uploader("📂 Upload your CSV file", type=["csv"])
 
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
@@ -130,14 +95,14 @@ if uploaded_file is not None:
     # Add engineered features automatically
     df = add_engineered_features(df)
 
-    st.write("✅ Dataset loaded successfully with engineered features!")
+    st.success("✅ Dataset loaded successfully with engineered features!")
     st.dataframe(df.head())
 
     # ----------------------------
     # Select input & output columns
     # ----------------------------
     all_columns = df.columns.tolist()
-    st.subheader("Select Features and Target Columns")
+    st.subheader("⚙️ Select Features and Target Columns")
 
     input_cols = st.multiselect(
         "Select Input Columns (X)", 
@@ -191,7 +156,7 @@ if uploaded_file is not None:
 # Prediction section
 # ----------------------------
 if "model" in st.session_state:
-    st.subheader("🔧 Predict for New Input")
+    st.subheader("🔮 Predict for New Input")
 
     df = st.session_state["df"]
     input_cols = st.session_state["input_cols"]
@@ -211,7 +176,7 @@ if "model" in st.session_state:
             val = st.selectbox(f"{col}", options)
             input_data[col] = val
 
-    if st.button("Predict"):
+    if st.button("🎯 Predict"):
         input_df = pd.DataFrame([input_data])
 
         # Apply same feature engineering to new input
@@ -224,8 +189,8 @@ if "model" in st.session_state:
         prediction = st.session_state["model"].predict(input_encoded)
         prediction = np.round(prediction[0]).astype(int)
 
-        st.success("🎯 Predictions:")
+        st.success("✅ Predictions:")
         for i, col in enumerate(st.session_state["output_cols"]):
-            st.write(f"{col}: **{prediction[i]}**")
+            st.write(f"**{col}:** {prediction[i]}")
 else:
-    st.info("Please upload a CSV, select columns, and click 🚀 Train Model")
+    st.info("ℹ️ Please upload a CSV, select columns, and click 🚀 Train Model")

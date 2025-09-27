@@ -12,7 +12,7 @@ st.markdown("""
     <style>
     /* Background */
     .stApp {
-        background-color: #f4f6f9;
+        background-color: #f8fafc;
         font-family: "Segoe UI", sans-serif;
     }
 
@@ -53,11 +53,27 @@ st.markdown("""
         border-radius: 10px;
     }
 
-    /* Multiselect & Inputs */
-    .stMultiSelect, .stNumberInput, .stSelectbox {
-        background-color: white;
-        border-radius: 10px;
-        padding: 0.5em;
+    /* Input Fields: Different Backgrounds */
+    .stNumberInput > div > div > input {
+        background-color: #e0f2fe !important; /* light blue */
+        color: #1e293b !important;
+        border-radius: 8px !important;
+        border: 1px solid #94a3b8 !important;
+        padding: 6px 10px !important;
+    }
+    .stSelectbox > div > div > select {
+        background-color: #dcfce7 !important; /* light green */
+        color: #1e293b !important;
+        border-radius: 8px !important;
+        border: 1px solid #94a3b8 !important;
+        padding: 6px 10px !important;
+    }
+    .stMultiSelect > div > div {
+        background-color: #fef9c3 !important; /* light yellow */
+        color: #1e293b !important;
+        border-radius: 8px !important;
+        border: 1px solid #94a3b8 !important;
+        padding: 6px 10px !important;
     }
     </style>
 """, unsafe_allow_html=True)

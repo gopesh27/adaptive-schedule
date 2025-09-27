@@ -4,6 +4,10 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
+import locale
+
+# Force decimal separator to be "."
+locale.setlocale(locale.LC_ALL, "C")
 
 st.set_page_config(page_title="🤖 AI-Driven Adaptive Scheduling", layout="wide")
 st.markdown("""
@@ -99,9 +103,11 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
-
 st.title("🤖 AI-Driven Adaptive Scheduling")
 
+# --------------------------
+# Feature Engineering
+# --------------------------
 def add_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
     if "Production_Load" in df and "Deadline_Hours" in df:
@@ -116,11 +122,13 @@ def add_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
         df["shift_binary"] = df["Shift"].apply(lambda x: 1 if str(x).lower() == "night" else 0)
     return df
 
+# --------------------------
+# File Upload
+# --------------------------
 uploaded_file = st.file_uploader("📂 Upload your CSV file", type=["csv"])
 
 if uploaded_file is not None:
-    # ensure CSV decimals are dots
-    df = pd.read_csv(uploaded_file, delimiter=",", decimal=".")
+    df = pd.read_csv(uploaded_file)
 
     df = add_engineered_features(df)
 
@@ -174,6 +182,9 @@ if uploaded_file is not None:
         st.session_state["input_cols"] = input_cols
         st.session_state["df"] = df
 
+# --------------------------
+# Prediction Section
+# --------------------------
 if "model" in st.session_state:
     st.subheader("🔧 Predict for New Input")
 
@@ -184,14 +195,15 @@ if "model" in st.session_state:
     input_data = {}
     for col in input_cols:
         if df[col].dtype in ["int64", "float64"]:
-            # Force dot-decimal formatting
-            val = st.number_input(
-                f"{col}", 
-                min_value=0.0, 
-                max_value=10000.0, 
-                value=float(df[col].mean()),
-                format="%.2f"   # always show with point instead of comma
+            # Use text_input to enforce dot decimals
+            raw_val = st.text_input(
+                f"{col} (use . for decimals)", 
+                value=f"{df[col].mean():.2f}"
             )
+            try:
+                val = float(raw_val.replace(",", "."))  # convert commas to dots
+            except ValueError:
+                val = float(df[col].mean())
             input_data[col] = val
         else:
             options = df[col].unique().tolist()
@@ -213,7 +225,7 @@ if "model" in st.session_state:
             if col.lower() in ["machine", "manpower"]:
                 val = int(round(prediction[i]))
             else:
-                val = round(prediction[i], 2)
+                val = float(f"{prediction[i]:.2f}")  # always with dot
             st.markdown(f'<div class="metric-card">{col}: {val}</div>', unsafe_allow_html=True)
 else:
     st.info("📥 Please upload a CSV, select columns, and click 🚀 Train Model")

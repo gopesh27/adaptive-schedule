@@ -5,10 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
 
-# Page settings
 st.set_page_config(page_title="🤖 AI-Driven Adaptive Scheduling", layout="wide")
-
-# ================= CUSTOM CSS =================
 st.markdown("""
     <style>
     /* Main background */
@@ -103,10 +100,8 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ================= APP TITLE =================
 st.title("🤖 AI-Driven Adaptive Scheduling")
 
-# ================= FEATURE ENGINEERING =================
 def add_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
     if "Production_Load" in df and "Deadline_Hours" in df:
@@ -121,11 +116,11 @@ def add_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
         df["shift_binary"] = df["Shift"].apply(lambda x: 1 if str(x).lower() == "night" else 0)
     return df
 
-# ================= FILE UPLOAD =================
 uploaded_file = st.file_uploader("📂 Upload your CSV file", type=["csv"])
 
 if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file)
+    # ensure CSV decimals are dots
+    df = pd.read_csv(uploaded_file, delimiter=",", decimal=".")
 
     df = add_engineered_features(df)
 
@@ -179,7 +174,6 @@ if uploaded_file is not None:
         st.session_state["input_cols"] = input_cols
         st.session_state["df"] = df
 
-# ================= PREDICTION =================
 if "model" in st.session_state:
     st.subheader("🔧 Predict for New Input")
 
@@ -190,11 +184,13 @@ if "model" in st.session_state:
     input_data = {}
     for col in input_cols:
         if df[col].dtype in ["int64", "float64"]:
+            # Force dot-decimal formatting
             val = st.number_input(
                 f"{col}", 
                 min_value=0.0, 
                 max_value=10000.0, 
-                value=float(df[col].mean())
+                value=float(df[col].mean()),
+                format="%.2f"   # always show with point instead of comma
             )
             input_data[col] = val
         else:

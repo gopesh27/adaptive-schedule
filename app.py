@@ -12,7 +12,7 @@ st.markdown("""
     <style>
     /* Background */
     .stApp {
-        background-color: #f8fafc;
+        background-color: #000000;
         font-family: "Segoe UI", sans-serif;
     }
 

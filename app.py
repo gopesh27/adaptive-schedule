@@ -12,61 +12,80 @@ locale.setlocale(locale.LC_ALL, "C")
 st.set_page_config(page_title="🤖 AI-Driven Adaptive Scheduling", layout="wide")
 st.markdown("""
     <style>
-    /* Main background */
+    /* Main background with gold-black swirl theme */
     .stApp {
-        background-color: #DA70D6;
+        background: linear-gradient(
+            135deg,
+            #000000 0%,
+            #1a1a1a 25%,
+            #daa520 50%,
+            #ffd700 75%,
+            #000000 100%
+        );
+        background-attachment: fixed;
+        background-size: 400% 400%;
+        animation: swirlGradient 20s ease infinite;
         font-family: 'Segoe UI', sans-serif;
+        color: white;
+    }
+
+    @keyframes swirlGradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
 
     /* Titles */
     h1, h2, h3, h4 {
-        color: #191970;
-        font-weight: 600;
+        color: #FFD700; /* gold */
+        font-weight: 700;
+        text-shadow: 1px 1px 4px black;
     }
 
     /* Buttons */
     .stButton > button {
-        background linear-gradient(90deg, #2563eb, #000000) !important;
+        background: linear-gradient(90deg, #FFD700, #000000) !important;
         color: white !important;
         border: none !important;
         border-radius: 12px !important;
         padding: 0.6em 1.2em !important;
-        font-weight: 500 !important;
+        font-weight: 600 !important;
         cursor: pointer !important;
         transition: all 0.3s ease-in-out !important;
+        box-shadow: 0px 4px 8px rgba(0,0,0,0.5);
     }
     .stButton > button:hover {
-        background: linear-gradient(90deg, #1d4ed8, #2563eb) !important;
-        transform: scale(1.03) !important;
+        background: linear-gradient(90deg, #FFB700, #2C1A1A) !important;
+        transform: scale(1.05) !important;
     }
     .stButton > button:active {
-        transform: scale(0.97) !important;
+        transform: scale(0.95) !important;
     }
 
     /* Number Input Fields */
     .stNumberInput > div > div > input {
-        background-color: #e0f2fe !important; /* light blue */
-        color: #1e293b !important;
+        background-color: #1a1a1a !important; 
+        color: #FFD700 !important;
         border-radius: 8px !important;
-        border: 1px solid #94a3b8 !important;
+        border: 1px solid #FFD700 !important;
         padding: 6px 10px !important;
     }
 
     /* Selectbox */
     .stSelectbox > div > div > select {
-        background-color: #dcfce7 !important; /* light green */
-        color: #1e293b !important;
+        background-color: #2c1a1a !important;
+        color: #FFD700 !important;
         border-radius: 8px !important;
-        border: 1px solid #94a3b8 !important;
+        border: 1px solid #FFD700 !important;
         padding: 6px 10px !important;
     }
 
     /* MultiSelect */
     .stMultiSelect > div > div {
-        background-color: #fef9c3 !important; /* light yellow */
-        color: #1e293b !important;
+        background-color: #000000 !important;
+        color: #FFD700 !important;
         border-radius: 8px !important;
-        border: 1px solid #94a3b8 !important;
+        border: 1px solid #FFD700 !important;
         padding: 6px 10px !important;
     }
 
@@ -74,35 +93,40 @@ st.markdown("""
     .stDataFrame {
         border-radius: 12px !important;
         overflow: hidden !important;
+        border: 2px solid #FFD700 !important;
     }
 
     /* Success / Info boxes */
     .stSuccess {
-        background-color: #dcfce7 !important;
-        border-left: 6px solid #22c55e !important;
+        background-color: rgba(218,165,32,0.2) !important; /* golden overlay */
+        border-left: 6px solid #FFD700 !important;
         border-radius: 8px !important;
         padding: 10px !important;
+        color: white !important;
     }
     .stInfo {
-        background-color: #e0f2fe !important;
-        border-left: 6px solid #2563eb !important;
+        background-color: rgba(255,215,0,0.15) !important;
+        border-left: 6px solid #DAA520 !important;
         border-radius: 8px !important;
         padding: 10px !important;
+        color: white !important;
     }
 
     /* Custom Prediction Cards */
     .metric-card {
-        background: white;
+        background: linear-gradient(145deg, #000000, #1a1a1a, #2c1a1a);
         border-radius: 12px;
         padding: 16px;
         margin: 10px 0;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.6);
         font-size: 1.1rem;
         font-weight: 600;
-        color: #1e293b;
+        color: #FFD700;
+        border: 1px solid #FFD700;
     }
     </style>
 """, unsafe_allow_html=True)
+
 st.title("🤖 AI-Driven Adaptive Scheduling")
 
 # --------------------------
